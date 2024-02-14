@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/global.css" />
     <title>Rock Paper Scissors - The Odin Project</title>
     <style>
       body {
@@ -13,11 +14,19 @@
     </style>
   </head>
   <body>
-    <h1>Rock Paper Scissors - The Odin Project</h1>
-    <p>
-      Open the <strong>Developer tools (F12)</strong> and go to the
-      <strong>Console</strong> tab!
-    </p>
+    <h1 class="title">Rock Paper Scissors - The Odin Project</h1>
+    <div class="scores">
+      <h1>Player: <span id="player-score">0</span></h1>
+      <h1>Computer: <span id="computer-score">0</span></h1>
+    </div>
+    <div class="buttons">
+      <button id="rock" class="btn">Rock</button>
+      <button id="paper" class="btn">Paper</button>
+      <button id="scissors" class="btn">Scissors</button>
+    </div>
+    <div class="display" id="results">Make your Choice!</div>
+    <div class="display" id="reset" hidden>Play Again?</div>
+
     <script src="./js/index.js"></script>
   </body>
 </html>

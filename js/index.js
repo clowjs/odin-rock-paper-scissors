@@ -9,10 +9,14 @@ function getPlayerChoice() {
     return playerChoice.toLowerCase();
 }
 
-function playRound(playerSelection, computerSelection, playerScore, computerScore) {
+function playRound(playerSelection, computerSelection) {
+    const results = document.querySelector('#results');
+    let playerScore = parseInt(document.querySelector('#player-score').textContent);
+    let computerScore = parseInt(document.querySelector('#computer-score').textContent);
+    
     if (playerSelection === computerSelection) {
-        console.log('The game ended up in a draw!');
-        return [playerScore, computerScore];
+        results.textContent = 'The game ended up in a draw!';
+        return;
     }
 
     let result;
@@ -21,35 +25,53 @@ function playRound(playerSelection, computerSelection, playerScore, computerScor
         (playerSelection === 'paper' && computerSelection === 'rock') ||
         (playerSelection === 'scissors' && computerSelection === 'paper')) {
         
-        playerScore++;
         result = `You Win! ${playerSelection.charAt(0).toUpperCase() + playerSelection.slice(1)} beats ${computerSelection}`;
+        playerScore++;
     } else {
-        computerScore++;
         result = `You Lose! ${computerSelection.charAt(0).toUpperCase() + computerSelection.slice(1)} beats ${playerSelection}`;
+        computerScore++;
     }
 
-    console.log(result);
-    return [playerScore, computerScore];
+    if (playerScore === 5 || computerScore === 5) {
+        const buttonsContainer = document.querySelector('.buttons');
+        const resetButton = document.querySelector('#reset');
+        
+        resetButton.style.display = 'block';
+        resetButton.addEventListener('click', () => {
+            playerScore = 0;
+            computerScore = 0;
+            results.textContent = '';
+            document.querySelector('#player-score').textContent = playerScore;
+            document.querySelector('#computer-score').textContent = computerScore;
+            buttonsContainer.style.display = 'flex';
+            resetButton.style.display = 'none';
+            document.querySelector('#results').textContent = 'Make your Choice!'
+        });
+
+
+        buttonsContainer.style.display = 'none';
+
+        if (playerScore > computerScore) {
+            result = 'You won the game!';
+        } else {
+            result = 'You lost the game!';
+        }
+    }
+
+    document.querySelector('#player-score').textContent = playerScore;
+    document.querySelector('#computer-score').textContent = computerScore;
+
+    results.textContent = result;
+    return;
 }
 
-function playGame() {
-    let playerScore = 0;
-    let computerScore = 0;
+const buttons = document.querySelectorAll('button');
 
-    for (let i = 0; i < 5; i++) {
-        const playerSelection = getPlayerChoice();
+buttons.forEach((button) => {
+    button.addEventListener('click', () => {
+        const playerSelection = button.id;
         const computerSelection = getComputerChoice();
 
-        [playerScore, computerScore] = playRound(playerSelection, computerSelection, playerScore, computerScore);
-    }
-
-    if (playerScore > computerScore) {
-        console.log(`You won ${playerScore} to ${computerScore}!`);
-    } else if (playerScore < computerScore) {
-        console.log(`You lost ${playerScore} to ${computerScore}!`);
-    } else {
-        console.log(`It was a draw ${playerScore} to ${computerScore}!`);
-    }
-}
-
-playGame();
+        playRound(playerSelection, computerSelection);
+    });
+});
